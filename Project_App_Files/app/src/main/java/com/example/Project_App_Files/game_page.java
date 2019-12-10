@@ -4,13 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.Project_App_Files.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.net.PlacesClient;
+
+import java.util.List;
 
 public class game_page extends AppCompatActivity {
+
+    GoogleMap mMap;
+    PlacesClient placesClient;
+    List<AutocompletePrediction> predictionList;
 
     Button topLeftBtn;
     Button bottomLeftBtn;
