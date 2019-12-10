@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='main_page'
+rootProject.name = 'Project_App_Files'

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.main_page"
+    package="com.example.Project_App_Files"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="GoogleAppIndexingWarning"
-    >
+    tools:ignore="GoogleAppIndexingWarning">
 
     <application
         android:allowBackup="true"
@@ -13,10 +12,10 @@
         android:supportsRtl="true"
         android:fullBackupContent="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".about_page" />
-        <activity android:name=".setting_page" />
-        <activity android:name=".game_page" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.Project_App_Files.about_page" />
+        <activity android:name="com.example.Project_App_Files.setting_page" />
+        <activity android:name="com.example.Project_App_Files.game_page" />
+        <activity android:name="com.example.Project_App_Files.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".about_page">
+    tools:context="com.example.Project_App_Files.about_page">
 
     <TextView
         android:id="@+id/aboutTxt"
