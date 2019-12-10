@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:fullBackupContent="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCvPmzqRShakYGrk-eWPaHecWKsYy_c6Eo" />
+
         <activity android:name="com.example.Project_App_Files.about_page" />
         <activity android:name="com.example.Project_App_Files.setting_page" />
         <activity android:name="com.example.Project_App_Files.game_page" />
