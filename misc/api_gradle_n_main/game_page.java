@@ -212,53 +212,7 @@ public class game_page extends AppCompatActivity {
         }
 
 
-        client_finder_radius.newCall(request_finder_radius).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                TextView TestingTxt = findViewById(R.id.Land);
-                TestingTxt.setText("HELLO");//Double.toString(size));
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (true /*response.isSuccessful()*/) {
-
-                    //final String MyResponse = response.body().string();
-
-                    try {
-
-                        TextView TestingTxt = findViewById(R.id.Land);
-                        TestingTxt.setText("HELLO");//Double.toString(size));
-
-                        //JSONArray FinderArray = new JSONArray(MyResponse);
-
-
-
-
-
-
-
-
-
-
-
-                        game_page.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                TextView TestingTxt = findViewById(R.id.Land);
-                                TestingTxt.setText("HELLO");//Double.toString(size));
-
-                            }
-                        });
-                    } catch (Exception e) {
-                        TextView HeaderTxt = findViewById(R.id.Land);
-                        HeaderTxt.setText("Error");
-
-                    }
-
-                }
-            }
-        }); //API airport Finder concluded
+ //API airport Finder concluded
 
 
 

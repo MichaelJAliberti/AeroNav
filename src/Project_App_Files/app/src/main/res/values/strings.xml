@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">P.O.O.P:Aero Nav</string>
+    <string name="about">About</string>
+    <string name="Back">Back</string>
+    <string name="willThey">Will they make it?</string>
+    <string name="Start">Start</string>
+    <string name="Settings">Settings</string>
+    <string name="whereWillLand">Where will this plane land?</string>
+    <string name="NewYork">New York</string>
+    <string name="LosAngeles">Los Angeles</string>
+    <string name="NewOrleans">New Orleans</string>
+    <string name="Hartford">Hartford</string>
+    <string name="Streak">Streak: 0</string>
+    <string name="space"> </string>
+</resources>
