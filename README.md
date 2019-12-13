@@ -15,6 +15,6 @@ Overview:
   The user is then able to examine the map and use logic and luck to attempt to guess which city is the plane’s destination.
 
 Build:
-  
+  In order to build the app, one must first clone the repository locally. Next,...
 
-Youtube Link:
+Youtube Link: 
