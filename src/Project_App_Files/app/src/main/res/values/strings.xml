@@ -12,4 +12,16 @@
     <string name="Hartford">Hartford</string>
     <string name="Streak">Streak: 0</string>
     <string name="space"> </string>
+    <string name="some_text"><![CDATA[\n
+        Professional Object Oriented Programmers was formed in late 2019\n in order to solve the crisis brought on by EC 327\'s final project.
+        In\n response to this profound threat to everyone\'s GPAs, the members\n of this group decided to create a game named Aero Nav.\n
+        The goal of Aero Nav was to fulfill all of the requirements set forth\n by the project assignment.\n
+        This group elected to create a game meant for all ages in order to\n foster unity in our increasingly divided world.\n
+        We hope we have succeeded, enjoy.\n
+        \n
+        Respectfully,\n
+        \n
+        P.O.O.P.\n
+        ]]></string>
+
 </resources>
