@@ -13,11 +13,14 @@ import com.example.Project_App_Files.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileReader;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -26,6 +29,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
 public class MainActivity extends AppCompatActivity {
 
     Button startBtn,
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
             aboutBtn;
 
     //String airport;
+
+
 
     private TextView mTextHeader;
 
@@ -96,58 +102,90 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-        if(true){
+        /*if(true){
 
             try {
                 TextView HeaderTxt = findViewById(R.id.HeaderTxt);
 
                 Response response = client_finder_radius.newCall(request_finder_radius).execute();
 
-                //final String myResponse = response.body().string();
+                 String myResponse = response.body().string();
                 //String myResponse = response.body();
 
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                JsonParser jp = new JsonParser();
-                JsonElement je = jp.parse(response.body().string());
-                String prettyJsonString = gson.toJson(je);
+                JSONArray mArrayID = new JSONArray(myResponse);
 
-                JsonElement je2 = je.getJ("0");
+                JSONObject first = (JSONObject) mArrayID.get(0);
+
+                String name = first.getString("name");
+
+                System.out.println(myResponse);
+
+                //JsonParser jsonParser = new JsonParser();
+
+                //JSONObject jsonObject = (JSONObject) jsonParser.parse(mArrayID);
+
+
+
+                //JSONArray mOBGJID = new mArrayID.getJSONArray("0");
+
+                //JSONObject jsonOBJ = new JSONObject(myResponse);
+
+                //JSONArray mArrayID = jsonOBJ.getJSONArray("0");
+
+
+                //Gson gson = new Gson();//Builder().setPrettyPrinting().create();
+                //JsonParser jp = new JsonParser();
+                //JsonElement je = jp.parse(response.body().string());
+                //String stuff = gson.toJson(je);
+
+                //System.out.println(stuff);
+
+                //JSONObject name = new JSONObject(stuff);
+
+                //Finder reader = gson.fromJson(stuff, Finder.class);
+
+                //JSONObject reader = gson.fromJson(je, JSONObject.class);//new JSONObject(stuff);
+
+                //JsonObject obj = je.getAsJsonObject();
+                //String prettyJsonString = gson.toJson(je);
+
+                //Properties data = gson.fromJson(toExtract)
+
+                //JsonElement je2 = je.getJ("0");
 
 
                 //JSONObject reader = new JSONObject(myResponse);
                 //reader.put(myResponse);
-                HeaderTxt.setText("Here");
+                //HeaderTxt.setText("Here");
                 //JSONObject first = reader.getJSONObject("0");
                 //final String airport_2 = first.getString("name");
 
 
                 //TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                HeaderTxt.setText("nis");
+                HeaderTxt.setText(name);
             } catch (IOException | JSONException e) {
                 TextView HeaderTxt = findViewById(R.id.HeaderTxt);
                 //HeaderTxt.setText("HI");
                 e.printStackTrace();
+
             }
 
-        }
+        }*/
 
-        /*client_finder_radius.newCall(request_finder_radius).enqueue(new Callback() {
+        client_finder_radius.newCall(request_finder_radius).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                //TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                //HeaderTxt.setText("Failed");
             }
             @Override
-            public void onResponse(Call call, Response response1) throws IOException {
-                if (response1.isSuccessful()) {
-                    final String MyResponse = response1.body().string();
-                    TextView HeaderTxt = findViewById(R.id.HeaderTxt);
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String MyResponse = response.body().string();
 
                     try {
 
                         //TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                        HeaderTxt.setText("hi");
+                        //HeaderTxt.setText("hi");
 
                         //JSONObject reader = new JSONObject(myResponse);
                         //JSONObject first = reader.getJSONObject("0");
@@ -160,7 +198,16 @@ public class MainActivity extends AppCompatActivity {
                         //System.out.print("Successful");
 
 
+                        //Response response = client_finder_radius.newCall(request_finder_radius).execute();
 
+                        //String myResponse = response.body().string();
+                        //String myResponse = response.body();
+
+                        JSONArray mArrayID = new JSONArray(MyResponse);
+
+                        JSONObject first = (JSONObject) mArrayID.get(0);
+
+                        final String name = first.getString("name");
 
 
 
@@ -168,23 +215,22 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                                HeaderTxt.setText("hi");
+
                             }
                         });
                     } catch (Exception e) {
-                        //TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                        HeaderTxt.setText("Successful");
+                        TextView HeaderTxt = findViewById(R.id.HeaderTxt);
+                        HeaderTxt.setText("Error");
 
                     }
 
                 }
             }
-        });*/
+        });
 
 
 
-        /*OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient();
 
         Request request_info = new Request.Builder()
                 .url("https://airport-info.p.rapidapi.com/airport?icao=EGKK")
@@ -218,15 +264,11 @@ public class MainActivity extends AppCompatActivity {
                         Global_longitude = longitude;
 
 
-
-
-
-
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //TextView HeaderTxt = findViewById(R.id.HeaderTxt);
-                                //HeaderTxt.setText(airport);
+                                TextView HeaderTxt = findViewById(R.id.HeaderTxt);
+                                HeaderTxt.setText(airport);
                             }
                         });
                         } catch (Exception e) {
@@ -235,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }
-        });*/
+        });
 
 
 
