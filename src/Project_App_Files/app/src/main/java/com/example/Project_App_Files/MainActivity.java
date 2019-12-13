@@ -165,11 +165,10 @@ public class MainActivity extends AppCompatActivity {
             Long preMidTime = (startTime + endTime) / 2;
             String midTime = preMidTime.toString();
 
-            // Unneeded
-            String data = "Response: " + planeData.toString() + "\n" + code;
-
             // Assemble new url
             String newUrl = "https://opensky-network.org/api/tracks/all?icao24=" + code + "&time=" + midTime;
+
+            g.planeData = newUrl;///////////////////
 
             // Make a request
             RequestQueue newQueue = Volley.newRequestQueue(this);
@@ -190,6 +189,11 @@ public class MainActivity extends AppCompatActivity {
                             g.setPlaneParse(response);
 
                             // Call next API
+
+                            g.airportInfoAPICall(g.getDepart(), 0);
+                            g.airportInfoAPICall(g.getArrival(), 1);
+
+                            // Proceed
                             gotToGamePage();
                         }
                     },
@@ -211,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             // Parse response for mid-flight coordinates
             JSONArray wayPts = response.getJSONArray("path");
-            int midPt = wayPts.length() / 2;
+            int midPt = wayPts.length()-1;
             JSONArray midPtInfo = wayPts.getJSONArray(midPt);
             double planeLat = midPtInfo.getDouble(1);
             double planeLong = midPtInfo.getDouble(2);

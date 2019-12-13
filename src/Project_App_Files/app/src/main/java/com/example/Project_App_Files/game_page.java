@@ -181,6 +181,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -210,6 +211,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+
 
 public class game_page extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -415,17 +418,18 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         // Prepare to fetch from Global
         Globals g = (Globals) getApplicationContext();
-        //double halfLat = g.getPlaneLat();
-        //double halfLong = g.getPlaneLong();
 
         // Points
-        LatLng origin = new LatLng(origLat, origLong);
-        LatLng location = new LatLng(locLat, locLong);
+        LatLng origin = new LatLng(g.getAirDepLat(), g.getAirDepLong());
+        LatLng location = new LatLng(g.getAirOneLat(), g.getAirOneLong());
         LatLng location_halfway = new LatLng(g.getPlaneLat(), g.getPlaneLong());
         LatLng option1 = new LatLng(lat1,long1);
         LatLng option2 = new LatLng(lat2,long2);
         LatLng option3 = new LatLng(lat3,long3);
 
+        // Plot markers
+        googleMap.addMarker(new MarkerOptions().position(origin)
+                .title(originName));
         googleMap.addMarker(new MarkerOptions().position(location)
                 .title(locationName));
         googleMap.addMarker(new MarkerOptions().position(option1)
@@ -445,9 +449,13 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
 
         TextView textView = (TextView)findViewById(R.id.streakID);
         Globals g = (Globals) getApplicationContext();
+        /*
         String streakVal = g.getStreak();
         String streakDisp = "Streak: " + streakVal;
         textView.setText(streakDisp);
+        */
+        String biggues = g.planeData + "\n" + g.departData + "\n" + g.arriveData + "\n\n" + g.departBiggus + "\n\n" + g.arriveBiggus;
+        textView.setText(biggues);
     }
 
     public void openGamePage() {
@@ -508,12 +516,9 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
             Long preMidTime = (startTime + endTime) / 2;
             String midTime = preMidTime.toString();
 
-            // Unneeded
-            String data = "Response: " + planeData.toString() + "\n" + code;
-
             // Assemble new url
             String newUrl = "https://opensky-network.org/api/tracks/all?icao24=" + code + "&time=" + midTime;
-            g.setTrackURL(newUrl); //////////////D ELE LE TE
+            g.planeData = newUrl;///////////////////
 
             // Make a request
             RequestQueue newQueue = Volley.newRequestQueue(this);
@@ -534,6 +539,10 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                             g.setPlaneParse(response);
 
                             // Call next API
+                            g.airportInfoAPICall(g.getDepart(), 0);
+                            g.airportInfoAPICall(g.getArrival(), 1);
+
+                            //Proceed
                             openGamePage();
                         }
                     },
@@ -555,7 +564,7 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
         try{
             // Parse response for mid-flight coordinates
             JSONArray wayPts = response.getJSONArray("path");
-            int midPt = wayPts.length() / 2;
+            int midPt = wayPts.length()-1;
             JSONArray midPtInfo = wayPts.getJSONArray(midPt);
             double planeLat = midPtInfo.getDouble(1);
             double planeLong = midPtInfo.getDouble(2);
@@ -570,7 +579,6 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
             e.printStackTrace();
         }
     }
-
 }
 
 
