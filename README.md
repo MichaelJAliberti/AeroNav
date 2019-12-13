@@ -15,6 +15,7 @@ Overview:
   The user is then able to examine the map and use logic and luck to attempt to guess which city is the plane’s destination.
 
 Build:
-  In order to build the app, one must first clone the repository locally. Next,...
+  In order to build the app, one must first clone the repository locally. 
+  As the whole project is collected into a single file, it just needs to be opened in Android Studio and run.
 
 Youtube Link: 
