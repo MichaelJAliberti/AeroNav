@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -16,14 +18,16 @@ import okhttp3.Response;
 
 public class Globals extends Application {
 
-    // Plane Stuff
     public String planeData;
-    // Airport Stuff
-    public String departData;
-    public String departBiggus = "Hey";
-    public String arriveData;
-    public String arriveBiggus = "Hey";
-    public Context Cxt;
+
+    // GamePage Iterator
+    private int gamePageIt = 0;
+    public void incGamePage(){
+        gamePageIt++;
+    }
+    public int getGamePageIt(){
+        return gamePageIt;
+    }
 
     // Start Data
     private JSONArray startData;
@@ -87,7 +91,8 @@ public class Globals extends Application {
     }
 
     // Airport1 (Destination/Arrival airport) Coordinates
-    String arrival;
+    public String arrival;
+    public String airOneName;
     double airOneLong;
     double airOneLat;
     // Functions
@@ -96,6 +101,12 @@ public class Globals extends Application {
     }
     public void setArrival(String arrival) {
         this.arrival = arrival;
+    }
+    public String getAirOneName() {
+        return airOneName;
+    }
+    public void setAirOneName(String airOneName) {
+        this.arrival = airOneName;
     }
     public double getAirOneLong() {
         return airOneLong;
@@ -111,9 +122,13 @@ public class Globals extends Application {
     }
 
     // Airport2 Coordinates
+    private String airTwoName;
     double airTwoLong;
     double airTwoLat;
     // Functions
+    public String getAirTwoName(){
+        return airTwoName;
+    }
     public double getAirTwoLong() {
         return airTwoLong;
     }
@@ -128,9 +143,13 @@ public class Globals extends Application {
     }
 
     // Airport3 Coordinates
+    public String airThreeName;
     double airThreeLong;
     double airThreeLat;
     // Functions
+    public String getAirThreeName(){
+        return airThreeName;
+    }
     public double getAirThreeLong() {
         return airThreeLong;
     }
@@ -145,19 +164,23 @@ public class Globals extends Application {
     }
 
     // Airport4 Coordinates
-    Long airFourLong;
-    Long airFourLat;
+    private String airFourName;
+    private double airFourLong;
+    private double airFourLat;
     // Functions
-    public Long getAirFourLong() {
+    public String getAirFourName(){
+        return airFourName;
+    }
+    public double getAirFourLong() {
         return airFourLong;
     }
-    public Long getAirFourLat() {
+    public double getAirFourLat() {
         return airFourLat;
     }
-    public void setAirFourLong(Long longitude) {
+    public void setAirFourLong(double longitude) {
         this.airFourLong = longitude;
     }
-    public void setAirFourLat(Long latitude) {
+    public void setAirFourLat(double latitude) {
         this.airFourLat = latitude;
     }
 
@@ -199,20 +222,12 @@ public class Globals extends Application {
     // Thes API requests are included here due to conflicts between the Volley and OKHttp
     // API request methods. This is not ideal, but a necessary evil
 
-    public void airportInfoAPICall(String inPort, int code)
+    public void airportInfoAPICall(String inPort)
     {
         // Format URL
         String newURL = "https://airport-info.p.rapidapi.com/airport?icao=" + inPort;
 
-        // Make parser final for airport determnations
-        final int id = code;
-
-        if (id == 0) {
-            departData = newURL;
-        }
-        else if (id == 1) {
-            arriveData = newURL;
-        }
+        //arriveData = newURL;
 
         // Make Call
         OkHttpClient client = new OkHttpClient();
@@ -238,22 +253,96 @@ public class Globals extends Application {
                         Double latitude = reader.getDouble("latitude");
                         Double longitude = reader.getDouble("longitude");
 
-                        if (id == 0) {
-                            depart = airport;
-                            airDepLat = latitude;
-                            airDepLong = longitude;
-                            departBiggus = reader.toString();
-                        }
-                        else if (id == 1) {
-                            arrival = airport;
-                            airOneLat = latitude;
-                            airOneLong = longitude;
-                            arriveBiggus = reader.toString();
-                        }
+                        airOneName = airport;
+                        airOneLat = latitude;
+                        airOneLong = longitude;
+
+                        airportFinderAPICall();
+
+                        //arriveBiggus = reader.toString();
                     } catch (Exception e) {
-                        arriveBiggus = "IDIOT YOU DUMB";
+                        //arriveBiggus = "IDIOT YOU DUMB";
                     }
             }
         });
+    }
+
+    public void airportFinderAPICall(){
+        // Establish client
+        OkHttpClient client_finder_radius = new OkHttpClient();
+
+        // Get arrival airport lat long and convert to strings
+        Double tempLat = airOneLat;
+        Double tempLong = airOneLong;
+        String latString = tempLat.toString();
+        String longString = tempLong.toString();
+
+        // Create url
+        String newUrl = "https://cometari-airportsfinder-v1.p.rapidapi.com/api/airports/by-radius?radius=200&lng=" + longString + "&lat=" + latString;
+
+        Request request_finder_radius = new Request.Builder()
+                .url(newUrl)
+                .get()
+                .addHeader("x-rapidapi-host", "cometari-airportsfinder-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "7f7aee40f2mshc8d7b84684cb6f4p190104jsn938a02e43ad2")
+                .build();
+
+        try {
+            double size = 0;
+            Double latitude,
+                    longitude;
+            String name;
+
+            Response response = client_finder_radius.newCall(request_finder_radius).execute();
+            final String MyResponse = response.body().string();
+
+            JSONArray FinderArray = new JSONArray(MyResponse);
+
+            for (int i = 0; i < 3; i++) {
+
+                size = FinderArray.length();
+                Random rand = new Random();//Math.random()*(size-1);
+
+                JSONObject airport = (JSONObject) FinderArray.get(rand.nextInt((int) size));
+
+                JSONObject location = airport.getJSONObject("location");
+
+                name = airport.getString("city");
+                latitude = location.getDouble("latitude");
+                longitude = location.getDouble("longitude");
+
+                if (((Math.abs(airOneLong) + 0.03) >= Math.abs(longitude) && Math.abs(airOneLong) - 0.03 <= Math.abs(longitude)) && (Math.abs(airOneLat) + 0.03 >= Math.abs(latitude) && Math.abs(airOneLat) - 0.03 <= Math.abs(latitude) ))  {
+                    airport = (JSONObject) FinderArray.get((int) (i+(size-i)/2));
+
+                    name = airport.getString("city");
+                    latitude = airport.getDouble("latitude");
+                    longitude = airport.getDouble("longitude");
+                }
+
+                switch (i) {
+                    case 0:
+                        // name1
+                        airTwoName = name;
+                        airTwoLat = latitude;
+                        airTwoLong = longitude;
+                        break;
+                    case 1:
+                        // name2
+                        airThreeName = name;
+                        airThreeLat = latitude;
+                        airThreeLong = longitude;
+                        break;
+                    case 2:
+                        // name3
+                        airFourName = name;
+                        airFourLat = latitude;
+                        airFourLong = longitude;
+                        break;
+                }
+            }
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

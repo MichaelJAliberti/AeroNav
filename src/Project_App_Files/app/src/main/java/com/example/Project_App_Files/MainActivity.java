@@ -23,7 +23,6 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     Button startBtn,
-            settingBtn,
             aboutBtn;
 
 
@@ -31,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        intervalAPICall();
 
         startBtn = findViewById(R.id.startBtn);
         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -43,14 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        settingBtn = findViewById(R.id.settingBtn);
-        settingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSettingPage();
 
-            }
-        });
 
         aboutBtn = findViewById(R.id.aboutBtn);
         aboutBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void openGamePage()
     {
-        // Starts chain of API calls before swapping pages
-
-        intervalAPICall();
+        // Goes to next page
+        gotToGamePage();
     }
 
     public void openSettingPage() {
@@ -188,13 +181,8 @@ public class MainActivity extends AppCompatActivity {
                             Globals g = (Globals)getApplicationContext();
                             g.setPlaneParse(response);
 
-                            // Call next API
-
-                            g.airportInfoAPICall(g.getDepart(), 0);
-                            g.airportInfoAPICall(g.getArrival(), 1);
-
-                            // Proceed
-                            gotToGamePage();
+                            // Other API calls
+                            g.airportInfoAPICall(g.getArrival());
                         }
                     },
                     new Response.ErrorListener() {
@@ -215,15 +203,24 @@ public class MainActivity extends AppCompatActivity {
         try{
             // Parse response for mid-flight coordinates
             JSONArray wayPts = response.getJSONArray("path");
-            int midPt = wayPts.length()-1;
+            int midPt = wayPts.length()/2;
             JSONArray midPtInfo = wayPts.getJSONArray(midPt);
             double planeLat = midPtInfo.getDouble(1);
             double planeLong = midPtInfo.getDouble(2);
+
+            // Parse response for origin coordinates
+            JSONArray depInfo = wayPts.getJSONArray(1);
+            double depLat = depInfo.getDouble(1);
+            double depLong = depInfo.getDouble(2);
 
             // Save midflight coordinates to global
             Globals g = (Globals)getApplicationContext();
             g.setPlaneLat(planeLat);
             g.setPlaneLong(planeLong);
+
+            // Save departure coordinates to global
+            g.setAirDepLat(depLat);
+            g.setAirDepLong(depLong);
         }
         catch (JSONException e)
         {

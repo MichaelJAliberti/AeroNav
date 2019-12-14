@@ -22,22 +22,12 @@
         android:id="@+id/startBtn"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="144dp"
         android:text="@string/Start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/settingBtn"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        android:text="@string/Settings"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/aboutBtn"
@@ -48,8 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingBtn"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintTop_toBottomOf="@+id/startBtn" />
 
     <ImageView
         android:id="@+id/imageView"

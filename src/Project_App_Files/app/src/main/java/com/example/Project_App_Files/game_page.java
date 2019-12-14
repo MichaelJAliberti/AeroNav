@@ -301,29 +301,38 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
         final int randomInt1to4 = getRandomNumberInRange(1,4);
 
         if (randomInt1to4 == 1) {
-            topLeftBtn.setText(locationName);
+            topLeftBtn.setText(g.getAirOneName());
 
         } else {
-            topLeftBtn.setText(option1Name);
-
+            topLeftBtn.setText(g.getAirTwoName());
         }
 
         if (randomInt1to4 == 2) {
-            bottomLeftBtn.setText(locationName);
+            bottomLeftBtn.setText(g.getAirOneName());
         } else {
-            bottomLeftBtn.setText(option2Name);
+            bottomLeftBtn.setText(g.getAirThreeName());
         }
 
         if (randomInt1to4 == 3) {
-            topRightBtn.setText(locationName);
+            topRightBtn.setText(g.getAirOneName());
         } else {
-            topRightBtn.setText(option3Name);
+            topRightBtn.setText(g.getAirFourName());
         }
 
         if (randomInt1to4 == 4) {
-            bottomRightBtn.setText(locationName);
+            bottomRightBtn.setText(g.getAirOneName());
         } else {
-            bottomRightBtn.setText(option1Name);
+            switch (randomInt1to4) {
+                case 1:
+                    bottomRightBtn.setText(g.getAirTwoName());
+                    break;
+                case 2:
+                    bottomRightBtn.setText(g.getAirThreeName());
+                    break;
+                case 3:
+                    bottomRightBtn.setText(g.getAirFourName());
+                    break;
+            }
         }
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
@@ -346,7 +355,18 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                     topLeftBtn.setBackgroundColor(Color.GREEN);
                     g.incStreak();
                     updateStreak();
-                    trackAPICall();
+                    // Delay
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 1000);
+                    openGamePage();
                 } else {
                     topLeftBtn.setBackgroundColor(Color.RED);
                     g.resetStread();
@@ -362,7 +382,18 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                     bottomLeftBtn.setBackgroundColor(Color.GREEN);
                     g.incStreak();
                     updateStreak();
-                    trackAPICall();
+                    // Delay
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 1000);
+                    openGamePage();
                 } else {
                     bottomLeftBtn.setBackgroundColor(Color.RED);
                     g.resetStread();
@@ -378,7 +409,18 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                     topRightBtn.setBackgroundColor(Color.GREEN);
                     g.incStreak();
                     updateStreak();
-                    trackAPICall();
+                    // Delay
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 1000);
+                    openGamePage();
                 } else {
                     topRightBtn.setBackgroundColor(Color.RED);
                     g.resetStread();
@@ -394,7 +436,18 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                     bottomRightBtn.setBackgroundColor(Color.GREEN);
                     g.incStreak();
                     updateStreak();
-                    trackAPICall();
+                    // Delay
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 1000);
+                    openGamePage();
                 } else {
                     bottomRightBtn.setBackgroundColor(Color.RED);
                     g.resetStread();
@@ -402,6 +455,13 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                 }
             }
         });
+        // Start next API call
+        trackAPICall();
+        //if (g.getPlaneIt()%2 == 1)
+        //{
+        //    g.incGamePage();
+        //    openGamePage();
+        //}
     }
 
     /**
@@ -423,21 +483,23 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
         LatLng origin = new LatLng(g.getAirDepLat(), g.getAirDepLong());
         LatLng location = new LatLng(g.getAirOneLat(), g.getAirOneLong());
         LatLng location_halfway = new LatLng(g.getPlaneLat(), g.getPlaneLong());
-        LatLng option1 = new LatLng(lat1,long1);
-        LatLng option2 = new LatLng(lat2,long2);
-        LatLng option3 = new LatLng(lat3,long3);
+        LatLng option1 = new LatLng(g.getAirTwoLat(),g.getAirTwoLong());
+        LatLng option2 = new LatLng(g.getAirThreeLat(),g.getAirThreeLong());
+        LatLng option3 = new LatLng(g.getAirFourLat(),g.getAirFourLong());
 
         // Plot markers
         googleMap.addMarker(new MarkerOptions().position(origin)
-                .title(originName));
+                .title("Origin"));
+        googleMap.addMarker(new MarkerOptions().position(location_halfway)
+                .title("Plane"));
         googleMap.addMarker(new MarkerOptions().position(location)
-                .title(locationName));
+                .title(g.getAirOneName()));
         googleMap.addMarker(new MarkerOptions().position(option1)
-                .title(option1Name));
+                .title(g.getAirTwoName()));
         googleMap.addMarker(new MarkerOptions().position(option2)
-                .title(option2Name));
+                .title(g.getAirThreeName()));
         googleMap.addMarker(new MarkerOptions().position(option3)
-                .title(option3Name));
+                .title(g.getAirFourName()));
 
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location_halfway,5f));
 
@@ -449,13 +511,9 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
 
         TextView textView = (TextView)findViewById(R.id.streakID);
         Globals g = (Globals) getApplicationContext();
-        /*
         String streakVal = g.getStreak();
         String streakDisp = "Streak: " + streakVal;
         textView.setText(streakDisp);
-        */
-        String biggues = g.planeData + "\n" + g.departData + "\n" + g.arriveData + "\n\n" + g.departBiggus + "\n\n" + g.arriveBiggus;
-        textView.setText(biggues);
     }
 
     public void openGamePage() {
@@ -539,11 +597,7 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
                             g.setPlaneParse(response);
 
                             // Call next API
-                            g.airportInfoAPICall(g.getDepart(), 0);
-                            g.airportInfoAPICall(g.getArrival(), 1);
-
-                            //Proceed
-                            openGamePage();
+                            g.airportInfoAPICall(g.getArrival());
                         }
                     },
                     new Response.ErrorListener() {
@@ -564,15 +618,24 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
         try{
             // Parse response for mid-flight coordinates
             JSONArray wayPts = response.getJSONArray("path");
-            int midPt = wayPts.length()-1;
+            int midPt = wayPts.length()/2;
             JSONArray midPtInfo = wayPts.getJSONArray(midPt);
             double planeLat = midPtInfo.getDouble(1);
             double planeLong = midPtInfo.getDouble(2);
+
+            // Parse response for origin coordinates
+            JSONArray depInfo = wayPts.getJSONArray(1);
+            double depLat = depInfo.getDouble(1);
+            double depLong = depInfo.getDouble(2);
 
             // Save midflight coordinates to global
             Globals g = (Globals)getApplicationContext();
             g.setPlaneLat(planeLat);
             g.setPlaneLong(planeLong);
+
+            // Save departure coordinates to global
+            g.setAirDepLat(depLat);
+            g.setAirDepLong(depLong);
         }
         catch (JSONException e)
         {
@@ -580,20 +643,3 @@ public class game_page extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 }
-
-
-
-/*
-try {
-            JSONObject heyo = g.getPlaneParse();
-            JSONArray wayPts = heyo.getJSONArray("path");
-            int midPt = wayPts.length() / 2;
-            JSONArray midPtInfo = wayPts.getJSONArray(midPt);
-            String HEYP = midPtInfo.toString();
-            String output = "URL: " + g.getTrackURL() + "\nDATA: " + HEYP;
-            textView.setText(output);
-        }
-        catch (JSONException e)
-        {
-        }
- */
