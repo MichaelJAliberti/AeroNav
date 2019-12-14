@@ -16,6 +16,7 @@ Overview:
 
 Build:
   In order to build the app, one must first clone the repository locally. 
-  As the whole project is collected into a single file, it just needs to be opened in Android Studio and run.
+  Take the Project_App_Files folder out of the src folder and move it into your Android Studio's projects folder.
+  Open the file in Android Studio and click run.
 
-Youtube Link: 
+Youtube Link: https://www.youtube.com/watch?v=lUjnnzn7JdQ
